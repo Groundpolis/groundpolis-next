@@ -126,6 +126,12 @@ export class User {
 
 	@Column('boolean', {
 		default: false,
+		comment: 'Whether the User hides following and followers.',
+	})
+	public hideFF: boolean;
+
+	@Column('boolean', {
+		default: false,
 		comment: 'Whether the User is a bot.',
 	})
 	public isBot: boolean;
@@ -147,6 +153,18 @@ export class User {
 		comment: 'Whether the User is a moderator.',
 	})
 	public isModerator: boolean;
+
+	@Column('boolean', {
+		default: false,
+		comment: 'Whether the User is verified.',
+	})
+	public isVerified: boolean;
+
+	@Column('boolean', {
+		comment: 'Whether the User is a premium member.',
+		default: false,
+	})
+	public isPremium: boolean;
 
 	@Index()
 	@Column('boolean', {
@@ -217,6 +235,12 @@ export class User {
 		comment: 'The native access token of the User. It will be null if the origin of the user is local.',
 	})
 	public token: string | null;
+
+	@Column('enum', {
+		enum: ['not-known', 'male', 'female', 'not-applicable'],
+		default: 'not-known', nullable: false,
+	})
+	public sex: 'not-known' | 'male' | 'female' | 'not-applicable';
 
 	constructor(data: Partial<User>) {
 		if (data == null) return;

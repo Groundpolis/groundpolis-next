@@ -1,8 +1,8 @@
 import { Entity, Index, JoinColumn, Column, PrimaryColumn, ManyToOne } from 'typeorm';
-import { User } from './user.js';
-import { DriveFile } from './drive-file.js';
 import { id } from '../id.js';
 import { noteVisibilities } from '../../types.js';
+import { User } from './user.js';
+import { DriveFile } from './drive-file.js';
 import { Channel } from './channel.js';
 
 @Entity()
@@ -85,6 +85,11 @@ export class Note {
 		default: false,
 	})
 	public localOnly: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public remoteFollowersOnly: boolean;
 
 	@Column('smallint', {
 		default: 0,

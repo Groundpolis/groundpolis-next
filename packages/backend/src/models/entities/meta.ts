@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { User } from './user.js';
 import { id } from '../id.js';
+import { User } from './user.js';
 import { Clip } from './clip.js';
 
 @Entity()
@@ -41,6 +41,22 @@ export class Meta {
 		default: false,
 	})
 	public disableRegistration: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public disableInvitation: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public disableFeatured: boolean;
+
+	@Column('varchar', {
+		length: 64,
+		default: '',
+	})
+	public disableInvitationReason: string;
 
 	@Column('boolean', {
 		default: false,
@@ -193,6 +209,12 @@ export class Meta {
 		comment: 'Drive capacity of a local user (MB)',
 	})
 	public localDriveCapacityMb: number;
+
+	@Column('integer', {
+		default: 2048,
+		comment: 'Drive capacity of a premium user (MB)',
+	})
+	public premiumDriveCapacityMb: number;
 
 	@Column('integer', {
 		default: 32,
@@ -429,4 +451,14 @@ export class Meta {
 		default: true,
 	})
 	public objectStorageS3ForcePathStyle: boolean;
+
+	@Column('integer', {
+		default: 10,
+	})
+	public emojiSuggestionLimitation: number;
+
+	@Column('integer', {
+		default: -1,
+	})
+	public emojiSuggestionLimitationPremium: number;
 }

@@ -1,6 +1,6 @@
 import { PrimaryColumn, Entity, Index, JoinColumn, Column, ManyToOne } from 'typeorm';
-import { User } from './user.js';
 import { id } from '../id.js';
+import { User } from './user.js';
 
 @Entity()
 @Index(['muterId', 'muteeId'], { unique: true })
@@ -40,6 +40,11 @@ export class Muting {
 		comment: 'The muter user ID.',
 	})
 	public muterId: User['id'];
+
+	@Column({
+		comment: 'Mute only reposts',
+	})
+	public isRenoteOnly: boolean;
 
 	@ManyToOne(type => User, {
 		onDelete: 'CASCADE',

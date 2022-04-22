@@ -1,7 +1,7 @@
 import { PrimaryColumn, Entity, Index, JoinColumn, Column, ManyToOne } from 'typeorm';
+import { id } from '../id.js';
 import { User } from './user.js';
 import { Note } from './note.js';
-import { id } from '../id.js';
 
 @Entity()
 @Index(['userId', 'noteId'], { unique: true })
@@ -41,4 +41,9 @@ export class NoteReaction {
 		length: 260,
 	})
 	public reaction: string;
+
+	@Column('boolean', {
+		nullable: true,
+	})
+	public dislike: boolean | null;
 }
