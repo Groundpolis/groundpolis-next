@@ -291,6 +291,7 @@ export const UserRepository = db.getRepository(User).extend({
 			isModerator: user.isModerator || falsy,
 			isBot: user.isBot || falsy,
 			isCat: user.isCat || falsy,
+			sex: user.sex,
 			instance: user.host ? userInstanceCache.fetch(user.host,
 				() => Instances.findOneBy({ host: user.host! }),
 				v => v != null,

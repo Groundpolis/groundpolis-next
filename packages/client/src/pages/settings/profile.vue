@@ -27,6 +27,14 @@
 		<template #prefix><i class="fas fa-birthday-cake"></i></template>
 	</FormInput>
 
+	<FormSelect v-model="profile.gender" class="_formBlock">
+		<template #label>{{ i18n.ts._gp.gender }}</template>
+		<option value="not-known">{{ $ts._gp._gender['not-known'] }}</option>
+		<option value="male">{{ $ts._gp._gender.male }}</option>
+		<option value="female">{{ $ts._gp._gender.female }}</option>
+		<option value="not-applicable">{{ $ts._gp._gender['not-applicable'] }}</option>
+	</FormSelect>
+
 	<FormSelect v-model="profile.lang" class="_formBlock">
 		<template #label>{{ i18n.ts.language }}</template>
 		<option v-for="x in Object.keys(langmap)" :key="x" :value="x">{{ langmap[x].nativeName }}</option>
@@ -84,6 +92,7 @@ const profile = reactive({
 	description: $i.description,
 	location: $i.location,
 	birthday: $i.birthday,
+	gender: $i.sex,
 	lang: $i.lang,
 	isBot: $i.isBot,
 	isCat: $i.isCat,
@@ -123,6 +132,7 @@ function save() {
 		location: profile.location || null,
 		birthday: profile.birthday || null,
 		lang: profile.lang || null,
+		sex: profile.gender || null,
 		isBot: !!profile.isBot,
 		isCat: !!profile.isCat,
 		showTimelineReplies: !!profile.showTimelineReplies,

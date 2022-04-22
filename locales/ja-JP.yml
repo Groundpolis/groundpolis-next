@@ -1709,3 +1709,11 @@ _deck:
     list: "リスト"
     mentions: "あなた宛て"
     direct: "ダイレクト"
+
+_gp:
+  gender: "性別"
+  _gender:
+    not-known: "設定しない"
+    male: "男性"
+    female: "女性"
+    not-applicable: "その他"

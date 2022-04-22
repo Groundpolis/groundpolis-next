@@ -77,7 +77,8 @@ export const paramDef = {
 		lang: { type: 'string', enum: [null, ...Object.keys(langmap)], nullable: true },
 		avatarId: { type: 'string', format: 'misskey:id', nullable: true },
 		bannerId: { type: 'string', format: 'misskey:id', nullable: true },
-		fields: { type: 'array',
+		fields: {
+			type: 'array',
 			minItems: 0,
 			maxItems: 16,
 			items: {
@@ -103,6 +104,7 @@ export const paramDef = {
 		receiveAnnouncementEmail: { type: 'boolean' },
 		alwaysMarkNsfw: { type: 'boolean' },
 		ffVisibility: { type: 'string', enum: ['public', 'followers', 'private'] },
+		sex: { type: 'string', enum: ['not-known', 'male', 'female', 'not-applicable'] },
 		pinnedPageId: { type: 'array', items: {
 			type: 'string', format: 'misskey:id',
 		} },
@@ -137,6 +139,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (ps.ffVisibility !== undefined) profileUpdates.ffVisibility = ps.ffVisibility;
 	if (ps.avatarId !== undefined) updates.avatarId = ps.avatarId;
 	if (ps.bannerId !== undefined) updates.bannerId = ps.bannerId;
+	if (ps.sex !== undefined) updates.sex = ps.sex;
 	if (ps.mutedWords !== undefined) {
 		// validate regular expression syntax
 		ps.mutedWords.filter(x => !Array.isArray(x)).forEach(x => {
