@@ -38,8 +38,26 @@
 				<option value="home">{{ $ts._visibility.home }}</option>
 				<option value="followers">{{ $ts._visibility.followers }}</option>
 				<option value="specified">{{ $ts._visibility.specified }}</option>
+				<option value="users">{{ $ts._visibility.users }}</option>
 			</FormSelect>
 			<FormSwitch v-model="defaultNoteLocalOnly" class="_formBlock">{{ $ts._visibility.localOnly }}</FormSwitch>
+			<FormSwitch v-model="defaultNoteRemoteFollowersOnly" class="_formBlock">{{ $ts._visibility.remoteFollowersOnly }}</FormSwitch>
+		</FormGroup>
+	</FormSection>
+
+	<FormSection>
+		<FormSwitch v-model="useDefaultNoteVisibilityOnRenote" class="_formBlock" @update:modelValue="save()">{{ $ts._gp.useDefaultNoteVisibilityOnRenote }} <GpBadge /></FormSwitch>
+		<FormGroup v-if="!useDefaultNoteVisibilityOnRenote" class="_formBlock">
+			<template #label>{{ $ts._gp.defaultRenoteVisibility }} <GpBadge /></template>
+			<FormSelect v-model="defaultRenoteVisibility" class="_formBlock">
+				<option value="public">{{ $ts._visibility.public }}</option>
+				<option value="home">{{ $ts._visibility.home }}</option>
+				<option value="followers">{{ $ts._visibility.followers }}</option>
+				<option value="specified">{{ $ts._visibility.specified }}</option>
+				<option value="users">{{ $ts._visibility.users }}</option>
+			</FormSelect>
+			<FormSwitch v-model="defaultRenoteLocalOnly" class="_formBlock">{{ $ts._visibility.localOnly }}</FormSwitch>
+			<FormSwitch v-model="defaultRenoteRemoteFollowersOnly" class="_formBlock">{{ $ts._visibility.remoteFollowersOnly }}</FormSwitch>
 		</FormGroup>
 	</FormSection>
 
@@ -69,7 +87,12 @@ let ffVisibility = $ref($i.ffVisibility);
 
 let defaultNoteVisibility = $computed(defaultStore.makeGetterSetter('defaultNoteVisibility'));
 let defaultNoteLocalOnly = $computed(defaultStore.makeGetterSetter('defaultNoteLocalOnly'));
+let defaultNoteRemoteFollowersOnly = $computed(defaultStore.makeGetterSetter('defaultNoteRemoteFollowersOnly'));
 let rememberNoteVisibility = $computed(defaultStore.makeGetterSetter('rememberNoteVisibility'));
+let useDefaultNoteVisibilityOnRenote = $computed(defaultStore.makeGetterSetter('useDefaultNoteVisibilityOnRenote'));
+let defaultRenoteVisibility = $computed(defaultStore.makeGetterSetter('defaultRenoteVisibility'));
+let defaultRenoteLocalOnly = $computed(defaultStore.makeGetterSetter('defaultRenoteLocalOnly'));
+let defaultRenoteRemoteFollowersOnly = $computed(defaultStore.makeGetterSetter('defaultRenoteRemoteFollowersOnly'));
 let keepCw = $computed(defaultStore.makeGetterSetter('keepCw'));
 
 function save() {

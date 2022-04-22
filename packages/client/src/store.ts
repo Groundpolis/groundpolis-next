@@ -1,6 +1,14 @@
+import { noteVisibilities } from 'misskey-js';
 import { markRaw, ref } from 'vue';
 import { Storage } from './pizzax';
+import defaultFaces from './scripts/default-faces';
+import { Rgba } from './scripts/rgba';
 import { Theme } from './scripts/theme';
+
+export type Template = {
+	label: string;
+	body: string;
+};
 
 export const postFormActions = [];
 export const userActions = [];
@@ -29,7 +37,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	defaultNoteVisibility: {
 		where: 'account',
-		default: 'public'
+		default: 'public' as typeof noteVisibilities[number]
 	},
 	defaultNoteLocalOnly: {
 		where: 'account',
@@ -235,6 +243,164 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	aiChanMode: {
 		where: 'device',
+		default: false
+	},
+	// Groundpolis
+	defaultNoteRemoteFollowersOnly: {
+		where: 'account',
+		default: false
+	},
+	faces: {
+		where: 'account',
+		default: defaultFaces
+	},
+	stealRule: {
+		where: 'account',
+		default: 1 as 1 | 2 | 3 | 4
+	},
+	stealReaction: {
+		where: 'account',
+		default: '⭐️'
+	},
+	injectUnlistedNoteInLTL: {
+		where: 'account',
+		default: false
+	},
+	renoteButtonMode: {
+		where: 'account',
+		default: 'choose' as 'choose' | 'renote' | 'quote' | 'renoteQuote'
+	},
+	useDisplayNameForSidebar: {
+		where: 'account',
+		default: true
+	},
+	disableReactions: {
+		where: 'account',
+		default: false
+	},
+	remoteFollowersOnly: {
+		where: 'deviceAccount',
+		default: false
+	},
+	useSticker: {
+		where: 'device',
+		default: true
+	},
+	makeCustomEmojisBigger: {
+		where: 'device',
+		default: true
+	},
+	iconShape: {
+		where: 'device',
+		default: 'circle' as 'circle' | 'square' | 'rounded' | 'droplet'
+	},
+	showPostPreview: {
+		where: 'device',
+		default: true
+	},
+	penWidth: {
+		where: 'device',
+		default: 4
+	},
+	eraserWidth: {
+		where: 'device',
+		default: 32
+	},
+	usePressure: {
+		where: 'device',
+		default: false
+	},
+	noteNameDisplayMode: {
+		where: 'device',
+		default: 0
+	},
+	hideHostName: {
+		where: 'device',
+		default: false
+	},
+	userHostDisplayMode: {
+		where: 'device',
+		default: 0
+	},
+	collapseLongNote: {
+		where: 'device',
+		default: true
+	},
+	alwaysPlayMediaInWindow: {
+		where: 'device',
+		default: false
+	},
+	emojiPickerHidePinnedEmojis: {
+		where: 'device',
+		default: false
+	},
+	emojiPickerHideRecentEmojis: {
+		where: 'device',
+		default: false
+	},
+	timelineTabItems: {
+		where: 'device',
+		default: ['home', 'local']
+	},
+	noteCollapseThreshold: {
+		where: 'device',
+		default: 192,
+	},
+	colorPickerPresets: {
+		where: 'device',
+		default: [
+			[0, 0, 0, 255],
+			[64, 64, 64, 255],
+			[128, 128, 128, 255],
+			[255, 255, 255, 255],
+			[255, 0, 0, 255],
+			[255, 128, 0, 255],
+			[255, 255, 0, 255],
+			[128, 255, 0, 255],
+			[0, 255, 0, 255],
+			[0, 255, 128, 255],
+			[0, 255, 255, 255],
+			[0, 128, 255, 255],
+			[0, 0, 255, 255],
+			[128, 0, 255, 255],
+			[255, 0, 255, 255],
+			[255, 0, 128, 255],
+		] as Rgba[],
+	},
+	confirmBeforePost: {
+		where: 'account',
+		default: false
+	},
+	tryNewPostForm: {
+		where: 'device',
+		default: false
+	},
+	uiMode: {
+		where: 'deviceAccount',
+		default: 'basic' as 'basic' | 'deck',
+	},
+	templates: {
+		where: 'deviceAccount',
+		default: [] as Template[],
+	},
+	templateList: {
+		where: 'account',
+		default: [] as Template[],
+	},
+	useDefaultNoteVisibilityOnRenote: {
+		where: 'account',
+		default: false
+	},
+	defaultRenoteVisibility: {
+		where: 'account',
+		default: 'public' as typeof noteVisibilities[number]
+	},
+	defaultRenoteLocalOnly: {
+		where: 'account',
+		default: false
+	},
+	defaultRenoteRemoteFollowersOnly: {
+		where: 'account',
 		default: false
 	},
 }));

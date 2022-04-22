@@ -3,13 +3,6 @@
 	<FormSelect v-model="lang" class="_formBlock">
 		<template #label>{{ $ts.uiLanguage }}</template>
 		<option v-for="x in langs" :key="x[0]" :value="x[0]">{{ x[1] }}</option>
-		<template #caption>
-			<I18n :src="$ts.i18nInfo" tag="span">
-				<template #link>
-					<MkLink url="https://crowdin.com/project/misskey">Crowdin</MkLink>
-				</template>
-			</I18n>
-		</template>
 	</FormSelect>
 
 	<FormRadios v-model="overridedDeviceKind" class="_formBlock">

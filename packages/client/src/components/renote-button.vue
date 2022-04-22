@@ -20,6 +20,7 @@ import * as os from '@/os';
 import { $i } from '@/account';
 import { useTooltip } from '@/scripts/use-tooltip';
 import { i18n } from '@/i18n';
+import { defaultStore } from '@/store';
 
 export default defineComponent({
 	props: {
@@ -58,12 +59,28 @@ export default defineComponent({
 
 		const renote = (viaKeyboard = false) => {
 			pleaseLogin();
+
+			const visibility = defaultStore.state.useDefaultNoteVisibilityOnRenote ? (
+				defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility
+			) : defaultStore.state.defaultRenoteVisibility;
+
+			const localOnly = defaultStore.state.useDefaultNoteVisibilityOnRenote ? (
+				defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly
+			) : defaultStore.state.defaultRenoteLocalOnly;
+
+			const remoteFollowersOnly = defaultStore.state.useDefaultNoteVisibilityOnRenote ? (
+				defaultStore.state.rememberNoteVisibility ? defaultStore.state.remoteFollowersOnly : defaultStore.state.defaultNoteRemoteFollowersOnly
+			) : defaultStore.state.defaultRenoteRemoteFollowersOnly;
+
 			os.popupMenu([{
 				text: i18n.ts.renote,
 				icon: 'fas fa-retweet',
 				action: () => {
 					os.api('notes/create', {
-						renoteId: props.note.id
+						renoteId: props.note.id,
+						visibility,
+						localOnly,
+						remoteFollowersOnly,
 					});
 				}
 			}, {

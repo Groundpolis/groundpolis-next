@@ -16,6 +16,7 @@ import MkAd from './global/ad.vue';
 import MkHeader from './global/header.vue';
 import MkSpacer from './global/spacer.vue';
 import MkStickyContainer from './global/sticky-container.vue';
+import GpBadge from './global/gp-badge.vue';
 
 export default function(app: App) {
 	app.component('I18n', I18n);
@@ -34,6 +35,7 @@ export default function(app: App) {
 	app.component('MkHeader', MkHeader);
 	app.component('MkSpacer', MkSpacer);
 	app.component('MkStickyContainer', MkStickyContainer);
+	app.component('GpBadge', GpBadge);
 }
 
 declare module '@vue/runtime-core' {
@@ -54,5 +56,6 @@ declare module '@vue/runtime-core' {
 		MkHeader: typeof MkHeader;
 		MkSpacer: typeof MkSpacer;
 		MkStickyContainer: typeof MkStickyContainer;
+		GpBadge: typeof GpBadge;
 	}
 }

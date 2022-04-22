@@ -1272,14 +1272,18 @@ _poll:
 _visibility:
   public: "パブリック"
   publicDescription: "全てのユーザーに公開"
-  home: "ホーム"
+  home: "未収載"
   homeDescription: "ホームタイムラインのみに公開"
   followers: "フォロワー"
   followersDescription: "自分のフォロワーのみに公開"
   specified: "ダイレクト"
   specifiedDescription: "指定したユーザーのみに公開"
+  users: "ログインユーザー"
+  usersDescription: "ログイン中のユーザーにのみ公開"
   localOnly: "ローカルのみ"
   localOnlyDescription: "リモートユーザーには非公開"
+  remoteFollowersOnly: "リモートフォロワーとローカル"
+  remoteFollowersOnlyDescription: "リモートでの二次拡散を防ぐ"
 
 _postForm:
   replyPlaceholder: "このノートに返信..."
@@ -1712,6 +1716,15 @@ _deck:
 
 _gp:
   gender: "性別"
+  original: "Groundpolis 固有設定です。"
+  template: "定型文"
+  deleteMode: "削除モード"
+  added: "追加しました。"
+  useDefaultNoteVisibilityOnRenote: "リノートにデフォルトの公開範囲を適用する"
+  defaultRenoteVisibility: "デフォルトの公開範囲 (リノート)"
+  defaultRenoteLocalOnly: "ローカルのみ (リノート)"
+  defaultRenoteRemoteFollowersOnly: "リモートフォロワーとローカル (リノート)"
+  welcomeBack: "おかえりなさい、{x}さん。"
   _gender:
     not-known: "設定しない"
     male: "男性"

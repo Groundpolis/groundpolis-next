@@ -28,7 +28,7 @@
 	</FormInput>
 
 	<FormSelect v-model="profile.gender" class="_formBlock">
-		<template #label>{{ i18n.ts._gp.gender }}</template>
+		<template #label>{{ i18n.ts._gp.gender }} <GpBadge/></template>
 		<option value="not-known">{{ $ts._gp._gender['not-known'] }}</option>
 		<option value="male">{{ $ts._gp._gender.male }}</option>
 		<option value="female">{{ $ts._gp._gender.female }}</option>
@@ -86,6 +86,7 @@ import * as symbols from '@/symbols';
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
 import { langmap } from '@/scripts/langmap';
+import GpBadge from '../../components/global/gp-badge.vue';
 
 const profile = reactive({
 	name: $i.name,
