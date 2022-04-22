@@ -1,12 +1,12 @@
 import { uploadFromUrl } from '@/services/drive/upload-from-url.js';
 import { CacheableRemoteUser, IRemoteUser } from '@/models/entities/user.js';
-import Resolver from '../resolver.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
-import { apLogger } from '../logger.js';
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { DriveFiles, Users } from '@/models/index.js';
 import { truncate } from '@/misc/truncate.js';
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from '@/misc/hard-limits.js';
+import { apLogger } from '../logger.js';
+import Resolver from '../resolver.js';
 
 const logger = apLogger;
 
@@ -35,7 +35,7 @@ export async function createImage(actor: CacheableRemoteUser, value: any): Promi
 		uri: image.url,
 		sensitive: image.sensitive,
 		isLink: !instance.cacheRemoteFiles,
-		comment: truncate(image.name, DB_MAX_IMAGE_COMMENT_LENGTH)
+		comment: truncate(image.name, DB_MAX_IMAGE_COMMENT_LENGTH),
 	});
 
 	if (file.isLink) {
@@ -57,8 +57,8 @@ export async function createImage(actor: CacheableRemoteUser, value: any): Promi
 /**
  * Imageを解決します。
  *
- * Misskeyに対象のImageが登録されていればそれを返し、そうでなければ
- * リモートサーバーからフェッチしてMisskeyに登録しそれを返します。
+ * Groundpolisに対象のImageが登録されていればそれを返し、そうでなければ
+ * リモートサーバーからフェッチしてGroundpolisに登録しそれを返します。
  */
 export async function resolveImage(actor: CacheableRemoteUser, value: any): Promise<DriveFile> {
 	// TODO

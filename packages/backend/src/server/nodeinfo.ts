@@ -1,8 +1,8 @@
 import Router from '@koa/router';
+import { IsNull, MoreThan } from 'typeorm';
 import config from '@/config/index.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import { Users, Notes } from '@/models/index.js';
-import { IsNull, MoreThan } from 'typeorm';
 import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { Cache } from '@/misc/cache.js';
 
@@ -15,9 +15,9 @@ export const links = [/* (awaiting release) {
 	rel: 'http://nodeinfo.diaspora.software/ns/schema/2.1',
 	href: config.url + nodeinfo2_1path
 }, */{
-	rel: 'http://nodeinfo.diaspora.software/ns/schema/2.0',
-	href: config.url + nodeinfo2_0path,
-}];
+		rel: 'http://nodeinfo.diaspora.software/ns/schema/2.0',
+		href: config.url + nodeinfo2_0path,
+	}];
 
 const nodeinfo2 = async () => {
 	const now = Date.now();
@@ -39,7 +39,7 @@ const nodeinfo2 = async () => {
 
 	return {
 		software: {
-			name: 'misskey',
+			name: 'groundpolis',
 			version: config.version,
 			repository: meta.repositoryUrl,
 		},

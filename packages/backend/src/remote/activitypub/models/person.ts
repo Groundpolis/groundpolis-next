@@ -103,7 +103,7 @@ function validateActor(x: IObject, uri: string): IActor {
 /**
  * Personをフェッチします。
  *
- * Misskeyに対象のPersonが登録されていればそれを返します。
+ * Groundpolisに対象のPersonが登録されていればそれを返します。
  */
 export async function fetchPerson(uri: string, resolver?: Resolver): Promise<CacheableUser | null> {
 	if (typeof uri !== 'string') throw new Error('uri is not string');
@@ -278,7 +278,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 /**
  * Personの情報を更新します。
- * Misskeyに対象のPersonが登録されていなければ無視します。
+ * Groundpolisに対象のPersonが登録されていなければ無視します。
  * @param uri URI of Person
  * @param resolver Resolver
  * @param hint Hint of Person object (この値が正当なPersonの場合、Remote resolveをせずに更新に利用します)
@@ -390,8 +390,8 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 /**
  * Personを解決します。
  *
- * Misskeyに対象のPersonが登録されていればそれを返し、そうでなければ
- * リモートサーバーからフェッチしてMisskeyに登録しそれを返します。
+ * Groundpolisに対象のPersonが登録されていればそれを返し、そうでなければ
+ * リモートサーバーからフェッチしてGroundpolisに登録しそれを返します。
  */
 export async function resolvePerson(uri: string, resolver?: Resolver): Promise<CacheableUser> {
 	if (typeof uri !== 'string') throw new Error('uri is not string');

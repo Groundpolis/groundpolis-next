@@ -5,11 +5,11 @@
  */
 
 import * as nestedProperty from 'nested-property';
-import Logger from '../logger.js';
 import { EntitySchema, Repository, LessThan, Between } from 'typeorm';
 import { dateUTC, isTimeSame, isTimeBefore, subtractTime, addTime } from '@/prelude/time.js';
 import { getChartInsertLock } from '@/misc/app-lock.js';
 import { db } from '@/db/postgre.js';
+import Logger from '../logger.js';
 
 const logger = new Logger('chart', 'white', process.env.NODE_ENV !== 'test');
 
@@ -325,7 +325,7 @@ export default abstract class Chart<T extends Schema> {
 			data = this.getNewLog(this.convertRawRecord(latest));
 		} else {
 			// ログが存在しなかったら
-			// (Misskeyインスタンスを建てて初めてのチャート更新時など)
+			// (Groundpolisインスタンスを建てて初めてのチャート更新時など)
 
 			// 初期ログデータを作成
 			data = this.getNewLog(null);

@@ -12,8 +12,8 @@ import Logger from '@/services/logger.js';
 import loadConfig from '@/config/load.js';
 import { Config } from '@/config/types.js';
 import { lessThan } from '@/prelude/array.js';
-import { envOption } from '../env.js';
 import { showMachineInfo } from '@/misc/show-machine-info.js';
+import { envOption } from '../env.js';
 import { db, initDb } from '../db/postgre.js';
 
 const _filename = fileURLToPath(import.meta.url);
@@ -37,15 +37,14 @@ function greet() {
 		console.log(' ' + chalk.gray(v) + themeColor('                        |___|\n'.substr(v.length)));
 		//#endregion
 
-		console.log(' Misskey is an open-source decentralized microblogging platform.');
-		console.log(chalk.rgb(255, 136, 0)(' If you like Misskey, please donate to support development. https://www.patreon.com/syuilo'));
+		console.log(' Groundpolis is an open-source decentralized microblogging platform.');
 
 		console.log('');
 		console.log(chalkTemplate`--- ${os.hostname()} {gray (PID: ${process.pid.toString()})} ---`);
 	}
 
-	bootLogger.info('Welcome to Misskey!');
-	bootLogger.info(`Misskey v${meta.version}`, null, true);
+	bootLogger.info('Welcome to Groundpolis!');
+	bootLogger.info(`Groundpolis v${meta.version}`, null, true);
 }
 
 function isRoot() {
@@ -73,7 +72,7 @@ export async function masterMain() {
 		process.exit(1);
 	}
 
-	bootLogger.succ('Misskey initialized');
+	bootLogger.succ('Groundpolis initialized');
 
 	if (!envOption.disableClustering) {
 		await spawnWorkers(config.clusterLimit);
@@ -175,7 +174,7 @@ async function validatePort(config: Config): Promise<void> {
 	}
 }
 
-async function spawnWorkers(limit: number = 1) {
+async function spawnWorkers(limit = 1) {
 	const workers = Math.min(limit, os.cpus().length);
 	bootLogger.info(`Starting ${workers} worker${workers === 1 ? '' : 's'}...`);
 	await Promise.all([...Array(workers)].map(spawnWorker));

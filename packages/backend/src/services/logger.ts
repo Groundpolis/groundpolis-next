@@ -2,10 +2,9 @@ import cluster from 'node:cluster';
 import chalk from 'chalk';
 import { default as convertColor } from 'color-convert';
 import { format as dateFormat } from 'date-fns';
-import { envOption } from '../env.js';
-import config from '@/config/index.js';
-
 import * as SyslogPro from 'syslog-pro';
+import config from '@/config/index.js';
+import { envOption } from '../env.js';
 
 type Domain = {
 	name: string;
@@ -29,7 +28,7 @@ export default class Logger {
 
 		if (config.syslog) {
 			this.syslogClient = new SyslogPro.RFC5424({
-				applacationName: 'Misskey',
+				applacationName: 'Groundpolis',
 				timestamp: true,
 				encludeStructuredData: true,
 				color: true,

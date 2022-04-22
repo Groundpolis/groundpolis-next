@@ -1,7 +1,7 @@
 {
-	"name": "misskey",
-	"version": "12.110.0",
-	"codename": "indigo",
+	"name": "groundpolis",
+	"version": "12.110.0-gp-5.0.0-alpha.1",
+	"codename": "shrimpia",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/misskey-dev/misskey.git"

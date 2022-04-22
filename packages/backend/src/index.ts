@@ -1,5 +1,5 @@
 /**
- * Misskey Entry Point!
+ * Groundpolis Entry Point!
  */
 
 import { EventEmitter } from 'node:events';

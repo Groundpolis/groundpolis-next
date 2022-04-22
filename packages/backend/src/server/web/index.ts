@@ -5,7 +5,7 @@
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ms from 'ms';
-import Koa from 'koa';
+import Koa, { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
 import Router from '@koa/router';
 import send from 'koa-send';
 import favicon from 'koa-favicon';
@@ -38,6 +38,13 @@ const app = new Koa();
 
 //#region Bull Dashboard
 const bullBoardPath = '/queue';
+
+const env = process.env.NODE_ENV;
+
+// NOTE: ParameterizedContextだけ指定すると型エラーが発生するので、強引にPickしている
+const setCache = (ctx: Pick<ParameterizedContext, 'set'>, onProduction: string): void => {
+	ctx.set('Cache-Control', env === 'production' ? onProduction : 'no-store');
+};
 
 // Authenticate
 app.use(async (ctx, next) => {
@@ -94,21 +101,21 @@ const router = new Router();
 router.get('/static-assets/(.*)', async ctx => {
 	await send(ctx as any, ctx.path.replace('/static-assets/', ''), {
 		root: staticAssets,
-		maxage: ms('7 days'),
+		maxage: env === 'production' ? ms('7 days') : undefined,
 	});
 });
 
 router.get('/client-assets/(.*)', async ctx => {
 	await send(ctx as any, ctx.path.replace('/client-assets/', ''), {
 		root: clientAssets,
-		maxage: ms('7 days'),
+		maxage: env === 'production' ? ms('7 days') : undefined,
 	});
 });
 
 router.get('/assets/(.*)', async ctx => {
 	await send(ctx as any, ctx.path.replace('/assets/', ''), {
 		root: assets,
-		maxage: ms('7 days'),
+		maxage: env === 'production' ? ms('7 days') : undefined,
 	});
 });
 
@@ -131,7 +138,7 @@ router.get('/twemoji/(.*)', async ctx => {
 
 	await send(ctx as any, path, {
 		root: `${_dirname}/../../../node_modules/@discordapp/twemoji/dist/svg/`,
-		maxage: ms('30 days'),
+		maxage: env === 'production' ? ms('30 days') : undefined,
 	});
 });
 
@@ -237,11 +244,11 @@ router.get(['/@:user', '/@:user/:sub'], async (ctx, next) => {
 			user, profile, me,
 			avatarUrl: await Users.getAvatarUrl(user),
 			sub: ctx.params.sub,
-			instanceName: meta.name || 'Misskey',
+			instanceName: meta.name || 'Groundpolis',
 			icon: meta.iconUrl,
 			themeColor: meta.themeColor,
 		});
-		ctx.set('Cache-Control', 'public, max-age=30');
+		setCache(ctx, 'public, max-age=30');
 	} else {
 		// リモートユーザーなので
 		// モデレータがAPI経由で参照可能にするために404にはしない
@@ -278,15 +285,15 @@ router.get('/notes/:note', async (ctx, next) => {
 			avatarUrl: await Users.getAvatarUrl(await Users.findOneByOrFail({ id: note.userId })),
 			// TODO: Let locale changeable by instance setting
 			summary: getNoteSummary(_note),
-			instanceName: meta.name || 'Misskey',
+			instanceName: meta.name || 'Groundpolis',
 			icon: meta.iconUrl,
 			themeColor: meta.themeColor,
 		});
 
 		if (['public', 'home'].includes(note.visibility)) {
-			ctx.set('Cache-Control', 'public, max-age=180');
+			setCache(ctx, 'public, max-age=180');
 		} else {
-			ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+			setCache(ctx, 'private, max-age=0, must-revalidate');
 		}
 
 		return;
@@ -318,15 +325,15 @@ router.get('/@:user/pages/:page', async (ctx, next) => {
 			page: _page,
 			profile,
 			avatarUrl: await Users.getAvatarUrl(await Users.findOneByOrFail({ id: page.userId })),
-			instanceName: meta.name || 'Misskey',
+			instanceName: meta.name || 'Groundpolis',
 			icon: meta.iconUrl,
 			themeColor: meta.themeColor,
 		});
 
 		if (['public'].includes(page.visibility)) {
-			ctx.set('Cache-Control', 'public, max-age=180');
+			setCache(ctx, 'public, max-age=180');
 		} else {
-			ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+			setCache(ctx, 'private, max-age=0, must-revalidate');
 		}
 
 		return;
@@ -350,12 +357,12 @@ router.get('/clips/:clip', async (ctx, next) => {
 			clip: _clip,
 			profile,
 			avatarUrl: await Users.getAvatarUrl(await Users.findOneByOrFail({ id: clip.userId })),
-			instanceName: meta.name || 'Misskey',
+			instanceName: meta.name || 'Groundpolis',
 			icon: meta.iconUrl,
 			themeColor: meta.themeColor,
 		});
 
-		ctx.set('Cache-Control', 'public, max-age=180');
+		setCache(ctx, 'public, max-age=180');
 
 		return;
 	}
@@ -375,12 +382,12 @@ router.get('/gallery/:post', async (ctx, next) => {
 			post: _post,
 			profile,
 			avatarUrl: await Users.getAvatarUrl(await Users.findOneByOrFail({ id: post.userId })),
-			instanceName: meta.name || 'Misskey',
+			instanceName: meta.name || 'Groundpolis',
 			icon: meta.iconUrl,
 			themeColor: meta.themeColor,
 		});
 
-		ctx.set('Cache-Control', 'public, max-age=180');
+		setCache(ctx, 'public, max-age=180');
 
 		return;
 	}
@@ -399,12 +406,12 @@ router.get('/channels/:channel', async (ctx, next) => {
 		const meta = await fetchMeta();
 		await ctx.render('channel', {
 			channel: _channel,
-			instanceName: meta.name || 'Misskey',
+			instanceName: meta.name || 'Groundpolis',
 			icon: meta.iconUrl,
 			themeColor: meta.themeColor,
 		});
 
-		ctx.set('Cache-Control', 'public, max-age=180');
+		setCache(ctx, 'public, max-age=180');
 
 		return;
 	}
@@ -449,7 +456,7 @@ router.get('/flush', async ctx => {
 // streamingに非WebSocketリクエストが来た場合にbase htmlをキャシュ付きで返すと、Proxy等でそのパスがキャッシュされておかしくなる
 router.get('/streaming', async ctx => {
 	ctx.status = 503;
-	ctx.set('Cache-Control', 'private, max-age=0');
+	setCache(ctx, 'private, max-age=0');
 });
 
 // Render base html for all requests
@@ -457,13 +464,13 @@ router.get('(.*)', async ctx => {
 	const meta = await fetchMeta();
 	await ctx.render('base', {
 		img: meta.bannerUrl,
-		title: meta.name || 'Misskey',
-		instanceName: meta.name || 'Misskey',
+		title: meta.name || 'Groundpolis',
+		instanceName: meta.name || 'Groundpolis',
 		desc: meta.description,
 		icon: meta.iconUrl,
 		themeColor: meta.themeColor,
 	});
-	ctx.set('Cache-Control', 'public, max-age=300');
+	setCache(ctx, 'public, max-age=300');
 });
 
 // Register router

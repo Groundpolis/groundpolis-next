@@ -34,6 +34,6 @@ First, in order to avoid duplicate Issues, please search to see if the problem y
 
 <!-- Tell us where on the platform it happens -->
 
-Misskey version:
+Groundpolis version:
 Your OS:
 Your browser:

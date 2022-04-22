@@ -5,15 +5,19 @@
 			<div id="debug"></div>
 			<div ref="containerEl" v-panel class="_formBlock about" :class="{ playing: easterEggEngine != null }">
 				<img src="/client-assets/about-icon.png" alt="" class="icon" draggable="false" @load="iconLoaded" @click="gravity"/>
-				<div class="misskey">Misskey</div>
+				<div class="misskey">Groundpolis</div>
 				<div class="version">v{{ version }}</div>
 				<span v-for="emoji in easterEggEmojis" :key="emoji.id" class="emoji" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }"><MkEmoji class="emoji" :emoji="emoji.emoji" :custom-emojis="$instance.emojis" :is-reaction="false" :normal="true" :no-style="true"/></span>
 			</div>
 			<div class="_formBlock" style="text-align: center;">
-				{{ i18n.ts._aboutMisskey.about }}<br><a href="https://misskey-hub.net/docs/misskey.html" target="_blank" class="_link">{{ i18n.ts.learnMore }}</a>
-			</div>
-			<div class="_formBlock" style="text-align: center;">
-				<MkButton primary rounded inline @click="iLoveMisskey">I <Mfm text="$[jelly ❤]"/> #Misskey</MkButton>
+				by
+				<div class="xeltica-logo">
+					<svg class="phage" viewBox="0 0 208 208">
+						<path d="M208 208h-16v-27.719l-.563-.375-10.875-7.25-33-22-33-22-2.562-1.709V208H96v-81.052l-35.562 23.708-33 22-10.875 7.25-.563.375V208H0v-36.282l3.563-2.375 4.124-2.75 10.875-7.25 33-22 33-22 10.875-7.25 4.125-2.75 4.438-2.959 4.438 2.959 4.125 2.75 10.875 7.25 33 22 33 22 10.875 7.25 4.125 2.75 3.562 2.375V208z"/>
+						<path d="M84.562 75.605l-33-22-33-22L16 29.897v17.052H0V0l12.438 8.292 4.125 2.75 10.875 7.25 33 22 30.355 20.237L104 69.334l10.562-7.042 33-22 33-22 10.875-7.25 4.125-2.75L208 0v46.949h-16V29.897l-2.562 1.708-33 22-33 22-5.016 3.344 5.016 3.343 33 22 33 22 2.562 1.709v-17.052h16v46.948l-12.438-8.292-4.125-2.749-10.875-7.25-33-22.001-33-22c-3.52-2.347-7.041-4.695-10.562-7.041l-5.281 3.52c-12.761 8.507-25.52 17.015-38.281 25.521l-33 22.001-10.875 7.25-4.125 2.75L0 157.897v-46.948h16v17.052l2.562-1.709 33-22 33-22 5.016-3.343-5.016-3.344z"/>
+					</svg>
+					Xeltica Studio
+				</div>
 			</div>
 			<FormSection>
 				<div class="_formLinks">
@@ -37,22 +41,9 @@
 			<FormSection>
 				<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
 				<div class="_formLinks">
-					<FormLink to="https://github.com/syuilo" external>@syuilo</FormLink>
-					<FormLink to="https://github.com/AyaMorisawa" external>@AyaMorisawa</FormLink>
-					<FormLink to="https://github.com/mei23" external>@mei23</FormLink>
-					<FormLink to="https://github.com/acid-chicken" external>@acid-chicken</FormLink>
-					<FormLink to="https://github.com/tamaina" external>@tamaina</FormLink>
-					<FormLink to="https://github.com/rinsuki" external>@rinsuki</FormLink>
-					<FormLink to="https://github.com/Xeltica" external>@Xeltica</FormLink>
-					<FormLink to="https://github.com/u1-liquid" external>@u1-liquid</FormLink>
-					<FormLink to="https://github.com/marihachi" external>@marihachi</FormLink>
+					<FormLink v-for="contributor in contributors" :key="contributor" :to="`https://github.com/${contributor}`" external>@{{ contributor }}</FormLink>
 				</div>
-				<template #caption><MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
-			</FormSection>
-			<FormSection>
-				<template #label><Mfm text="$[jelly ❤]"/> {{ i18n.ts._aboutMisskey.patrons }}</template>
-				<div v-for="patron in patrons" :key="patron">{{ patron }}</div>
-				<template #caption>{{ i18n.ts._aboutMisskey.morePatrons }}</template>
+				<MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink>
 			</FormSection>
 		</div>
 	</MkSpacer>
@@ -64,7 +55,6 @@ import { nextTick, onBeforeUnmount } from 'vue';
 import { version } from '@/config';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
-import MkButton from '@/components/ui/button.vue';
 import MkLink from '@/components/link.vue';
 import { physics } from '@/scripts/physics';
 import * as symbols from '@/symbols';
@@ -72,90 +62,16 @@ import { i18n } from '@/i18n';
 import { defaultStore } from '@/store';
 import * as os from '@/os';
 
-const patrons = [
-	'まっちゃとーにゅ',
-	'mametsuko',
-	'noellabo',
-	'AureoleArk',
-	'Gargron',
-	'Nokotaro Takeda',
-	'Suji Yan',
-	'oi_yekssim',
-	'regtan',
-	'Hekovic',
-	'nenohi',
-	'Gitmo Life Services',
-	'naga_rus',
-	'Efertone',
-	'Melilot',
-	'motcha',
-	'nanami kan',
-	'sevvie Rose',
-	'Hayato Ishikawa',
-	'Puniko',
-	'skehmatics',
-	'Quinton Macejkovic',
-	'YUKIMOCHI',
-	'dansup',
-	'mewl hayabusa',
-	'Emilis',
-	'Fristi',
-	'makokunsan',
-	'chidori ninokura',
-	'Peter G.',
-	'見当かなみ',
-	'natalie',
-	'Maronu',
-	'Steffen K9',
-	'takimura',
-	'sikyosyounin',
-	'Nesakko',
-	'YuzuRyo61',
-	'blackskye',
-	'sheeta.s',
-	'osapon',
-	'public_yusuke',
-	'CG',
-	'吴浥',
-	't_w',
-	'Jerry',
-	'nafuchoco',
-	'Takumi Sugita',
-	'GLaTAN',
-	'mkatze',
-	'kabo2468y',
-	'mydarkstar',
-	'Roujo',
-	'DignifiedSilence',
-	'uroco @99',
-	'totokoro',
-	'うし',
-	'kiritan',
-	'weepjp',
-	'Liaizon Wakest',
-	'Duponin',
-	'Blue',
-	'Naoki Hirayama',
-	'wara',
-	'Wataru Manji (manji0)',
-	'みなしま',
-	'kanoy',
-	'xianon',
-	'Denshi',
-	'Osushimaru',
-	'にょんへら',
-	'おのだい',
-	'Leni',
-	'oss',
-	'Weeble',
-	'蝉暮せせせ',
-	'ThatOneCalculator',
-];
-
 let easterEggReady = false;
 let easterEggEmojis = $ref([]);
 let easterEggEngine = $ref(null);
 const containerEl = $ref<HTMLElement>();
+
+const contributors = [
+	'Xeltica',
+	'm-hayabusa',
+	'remitocat',
+];
 
 function iconLoaded() {
 	const emojis = defaultStore.state.reactions;
@@ -178,13 +94,6 @@ function gravity() {
 	if (!easterEggReady) return;
 	easterEggReady = false;
 	easterEggEngine = physics(containerEl);
-}
-
-function iLoveMisskey() {
-	os.post({
-		initialText: 'I $[jelly ❤] #Misskey',
-		instant: true,
-	});
 }
 
 onBeforeUnmount(() => {
@@ -253,6 +162,18 @@ defineExpose({
 				font-size: 24px;
 				width: 24px;
 			}
+		}
+	}
+	.xeltica-logo {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		margin-top: 16px;
+		> .phage {
+			width: 32px;
+			height: 32px;
+			fill: var(--fg);
 		}
 	}
 }

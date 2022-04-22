@@ -1,10 +1,10 @@
 import { URL } from 'node:url';
 import Bull from 'bull';
 import Logger from '@/services/logger.js';
-import { WebhookDeliverJobData } from '../types.js';
 import { getResponse, StatusError } from '@/misc/fetch.js';
 import { Webhooks } from '@/models/index.js';
 import config from '@/config/index.js';
+import { WebhookDeliverJobData } from '../types.js';
 
 const logger = new Logger('webhook');
 
@@ -16,10 +16,10 @@ export default async (job: Bull.Job<WebhookDeliverJobData>) => {
 			url: job.data.to,
 			method: 'POST',
 			headers: {
-				'User-Agent': 'Misskey-Hooks',
-				'X-Misskey-Host': config.host,
-				'X-Misskey-Hook-Id': job.data.webhookId,
-				'X-Misskey-Hook-Secret': job.data.secret,
+				'User-Agent': 'Groundpolis-Hooks',
+				'X-Groundpolis-Host': config.host,
+				'X-Groundpolis-Hook-Id': job.data.webhookId,
+				'X-Groundpolis-Hook-Secret': job.data.secret,
 			},
 			body: JSON.stringify({
 				hookId: job.data.webhookId,

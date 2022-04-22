@@ -14,36 +14,13 @@ const merge = (...args) => args.reduce((a, c) => ({
 }), {});
 
 const languages = [
-	'ar-SA',
-	'cs-CZ',
-	'da-DK',
-	'de-DE',
 	'en-US',
-	'es-ES',
-	'fr-FR',
-	'id-ID',
-	'it-IT',
 	'ja-JP',
-	'ja-KS',
-	'kab-KAB',
-	'kn-IN',
-	'ko-KR',
-	'nl-NL',
-	'no-NO',
-	'pl-PL',
-	'pt-PT',
-	'ru-RU',
-	'sk-SK',
-	'ug-CN',
-	'uk-UA',
-	'zh-CN',
-	'zh-TW',
 ];
 
 const primaries = {
 	'en': 'US',
 	'ja': 'JP',
-	'zh': 'CN',
 };
 
 // 何故か文字列にバックスペース文字が混入することがあり、YAMLが壊れるので取り除く
@@ -56,7 +33,6 @@ module.exports = Object.entries(locales)
 		const [lang] = k.split('-');
 		switch (k) {
 			case 'ja-JP': return v;
-			case 'ja-KS':
 			case 'en-US': return merge(locales['ja-JP'], v);
 			default: return merge(
 				locales['ja-JP'],

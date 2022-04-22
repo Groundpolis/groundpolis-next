@@ -170,10 +170,10 @@ describe('After user singed in', () => {
     cy.visit('/');
 
 		cy.get('[data-cy-open-post-form]').click();
-		cy.get('[data-cy-post-form-text]').type('Hello, Misskey!');
+		cy.get('[data-cy-post-form-text]').type('Hello, Groundpolis!');
 		cy.get('[data-cy-open-post-form-submit]').click();
 
-		cy.contains('Hello, Misskey!');
+		cy.contains('Hello, Groundpolis!');
   });
 });
 

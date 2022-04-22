@@ -25,7 +25,7 @@ const defaultRoutes = [
 	{ path: '/signup-complete/:code', component: page('signup-complete'), props: route => ({ code: route.params.code }) },
 	{ path: '/announcements', component: page('announcements') },
 	{ path: '/about', component: page('about') },
-	{ path: '/about-misskey', component: page('about-misskey') },
+	{ path: '/about-groundpolis', component: page('about-misskey') },
 	{ path: '/featured', component: page('featured') },
 	{ path: '/theme-editor', component: page('theme-editor') },
 	{ path: '/advanced-theme-editor', component: page('advanced-theme-editor') },

@@ -40,7 +40,7 @@ import { reactionPicker } from '@/scripts/reaction-picker';
 import { getUrlWithoutLoginId } from '@/scripts/login-id';
 import { getAccountFromId } from '@/scripts/get-account-from-id';
 
-console.info(`Misskey v${version}`);
+console.info(`Groundpolis v${version}`);
 
 if (_DEV_) {
 	console.warn('Development mode!!!');
@@ -420,7 +420,7 @@ if ($i) {
 	});
 
 	// トークンが再生成されたとき
-	// このままではMisskeyが利用できないので強制的にサインアウトさせる
+	// このままではGroundpolisが利用できないので強制的にサインアウトさせる
 	main.on('myTokenRegenerated', () => {
 		signout();
 	});
