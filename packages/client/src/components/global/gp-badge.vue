@@ -16,5 +16,6 @@ import { i18n } from '@/i18n';
 	font-weight: bold;
 	border: 1px solid #ffffff10;
 	margin-left: 4px;
+	cursor: help;
 }
 </style>

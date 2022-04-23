@@ -39,7 +39,6 @@
 		<FormSwitch v-model="showGapBetweenNotesInTimeline" class="_formBlock">{{ $ts.showGapBetweenNotesInTimeline }}</FormSwitch>
 		<FormSwitch v-model="loadRawImages" class="_formBlock">{{ $ts.loadRawImages }}</FormSwitch>
 		<FormSwitch v-model="disableShowingAnimatedImages" class="_formBlock">{{ $ts.disableShowingAnimatedImages }}</FormSwitch>
-		<FormSwitch v-model="squareAvatars" class="_formBlock">{{ $ts.squareAvatars }}</FormSwitch>
 		<FormSwitch v-model="useSystemFont" class="_formBlock">{{ $ts.useSystemFont }}</FormSwitch>
 		<FormSwitch v-model="useOsNativeEmojis" class="_formBlock">{{ $ts.useOsNativeEmojis }}
 			<div><Mfm :key="useOsNativeEmojis" text="🍮🍦🍭🍩🍰🍫🍬🥞🍪"/></div>
@@ -73,6 +72,32 @@
 		<option value="force">{{ $ts._nsfw.force }}</option>
 	</FormSelect>
 
+	<FormSelect v-model="renoteButtonMode" class="_formBlock">
+		<template #label>
+			<I18n :src="$ts._gp.renoteButtonMode" tag="span">
+				<template #renote>
+					<i class="fas fa-retweet"/>
+				</template>
+			</I18n>
+			<GpBadge/>
+		</template>
+		<option value="choose">{{ $ts._gp._renoteButtonMode.choose }}</option>
+		<option value="renote">{{ $ts._gp._renoteButtonMode.renote }}</option>
+		<option value="quote">{{ $ts._gp._renoteButtonMode.quote }}</option>
+		<option value="renoteQuote">{{ $ts._gp._renoteButtonMode.renoteQuote }}</option>
+	</FormSelect>
+
+	<FormGroup>
+		<template #label>{{ $ts._gp.iconShape }} <GpBadge/></template>
+		<MkAvatar class="avatar" :user="$i" :show-indicator="true"/>
+		<FormRadios v-model="iconShape" class="_formBlock">			
+			<option v-for="shape in ['circle', 'square', 'rounded', 'droplet']" :key="shape" :value="shape">
+				<div :class="['icon-shape-preview', shape]"/>
+				{{ $ts._gp._iconShape[shape] }}
+			</option>
+		</FormRadios>
+	</FormGroup>
+
 	<FormGroup>
 		<template #label>{{ $ts.defaultNavigationBehaviour }}</template>
 		<FormSwitch v-model="defaultSideView">{{ $ts.openInSideView }}</FormSwitch>
@@ -99,17 +124,19 @@ import { ColdDeviceStorage } from '@/store';
 import * as os from '@/os';
 import { unisonReload } from '@/scripts/unison-reload';
 import * as symbols from '@/symbols';
+import GpBadge from '@/components/global/gp-badge.vue';
 
 export default defineComponent({
 	components: {
-		MkLink,
-		FormSwitch,
-		FormSelect,
-		FormRadios,
-		FormGroup,
-		FormLink,
-		FormSection,
-	},
+    MkLink,
+    FormSwitch,
+    FormSelect,
+    FormRadios,
+    FormGroup,
+    FormLink,
+    FormSection,
+    GpBadge
+},
 
 	emits: ['info'],
 
@@ -149,6 +176,9 @@ export default defineComponent({
 		useReactionPickerForContextMenu: defaultStore.makeGetterSetter('useReactionPickerForContextMenu'),
 		squareAvatars: defaultStore.makeGetterSetter('squareAvatars'),
 		aiChanMode: defaultStore.makeGetterSetter('aiChanMode'),
+		// Groundpolis
+		renoteButtonMode: defaultStore.makeGetterSetter('renoteButtonMode'),
+		iconShape: defaultStore.makeGetterSetter('iconShape'),
 	},
 
 	watch: {
@@ -210,7 +240,39 @@ export default defineComponent({
 			if (canceled) return;
 
 			unisonReload();
+			
 		}
 	}
 });
 </script>
+
+<style lang="scss" scoped>
+.avatar {
+	width: 48px;
+	height: 48px;
+}
+
+.icon-shape-preview {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	margin-right: 0.5em;
+	background: currentColor;
+	vertical-align: -0.14em;
+	&.circle {
+		border-radius: 50%;
+	}
+
+	&.square {
+		border-radius: 0;
+	}
+
+	&.rounded {
+		border-radius: 20%;
+	}
+
+	&.droplet {
+		border-radius: 50% 50% 0 50%;
+	}
+}
+</style>

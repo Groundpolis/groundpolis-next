@@ -1,9 +1,9 @@
 <template>
-<span v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" class="eiwwqkts _noSelect" :class="{ cat: user.isCat, square: $store.state.squareAvatars }" :style="{ color }" :title="acct(user)" @click="onClick">
+<span v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" class="eiwwqkts _noSelect" :class="[iconShape, { cat: user.isCat, animated }]" :style="{ color }" :title="acct(user)" @click="onClick">
 	<img class="inner" :src="url" decoding="async"/>
 	<MkUserOnlineIndicator v-if="showIndicator" class="indicator" :user="user"/>
 </span>
-<MkA v-else v-user-preview="disablePreview ? undefined : user.id" class="eiwwqkts _noSelect" :class="{ cat: user.isCat, square: $store.state.squareAvatars }" :style="{ color }" :to="userPage(user)" :title="acct(user)" :target="target">
+<MkA v-else v-user-preview="disablePreview ? undefined : user.id" class="eiwwqkts _noSelect" :class="[iconShape, { cat: user.isCat, animated }]" :style="{ color }" :to="userPage(user)" :title="acct(user)" :target="target">
 	<img class="inner" :src="url" decoding="async"/>
 	<MkUserOnlineIndicator v-if="showIndicator" class="indicator" :user="user"/>
 </MkA>
@@ -44,6 +44,10 @@ function onClick(ev: MouseEvent) {
 }
 
 let color = $ref();
+
+const animated = defaultStore.reactiveState.animation;
+
+const iconShape = defaultStore.reactiveState.iconShape;
 
 watch(() => props.user.avatarBlurhash, () => {
 	color = extractAvgColorFromBlurhash(props.user.avatarBlurhash);
@@ -100,14 +104,6 @@ watch(() => props.user.avatarBlurhash, () => {
 		height: 20%;
 	}
 
-	&.square {
-		border-radius: 20%;
-
-		> .inner {
-			border-radius: 20%;
-		}
-	}
-
 	&.cat {
 		&:before, &:after {
 			background: #df548f;
@@ -129,7 +125,7 @@ watch(() => props.user.avatarBlurhash, () => {
 			transform: rotate(-37.5deg) skew(-30deg);
 		}
 
-		&:hover {
+		&.animated:hover {
 			&:before {
 				animation: earwiggleleft 1s infinite;
 			}
@@ -139,5 +135,21 @@ watch(() => props.user.avatarBlurhash, () => {
 			}
 		}
 	}
+}
+
+.circle, .circle > .inner {
+	border-radius: 50%;
+}
+
+.square, .square > .inner {
+	border-radius: 0;
+}
+
+.rounded, .rounded > .inner {
+	border-radius: 20%;
+}
+
+.droplet, .droplet > .inner {
+	border-radius: 50% 50% 0 50%;
 }
 </style>
