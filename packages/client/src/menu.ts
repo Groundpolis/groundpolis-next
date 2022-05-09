@@ -168,6 +168,11 @@ export const menuDef = reactive({
 		icon: 'fas fa-terminal',
 		to: '/scratchpad',
 	},
+	paint: {
+		title: 'paint',
+		icon: 'fas fa-paint-brush',
+		to: '/paint',
+	},
 	ui: {
 		title: 'switchUi',
 		icon: 'fas fa-columns',

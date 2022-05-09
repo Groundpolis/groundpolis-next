@@ -842,6 +842,7 @@ oneDay: "1日"
 oneWeek: "1週間"
 reflectMayTakeTime: "反映されるまで時間がかかる場合があります。"
 failedToFetchAccountInformation: "アカウント情報の取得に失敗しました"
+paint: "ペイント"
 
 _emailUnavailable:
   used: "既に使用されています"
@@ -1812,6 +1813,10 @@ _gp:
     width: "幅"
     height: "高さ"
     canvasColor: "キャンバスの色"
+    usePressure: "筆圧感知"
+    usePressureDescription: "筆圧感知を有効化すると、対応している環境で、筆圧に従ってペンの太さが変化するようになります。"
+    penWidth: "ペンの太さ"
+    eraserWidth: "消しゴムの太さ"
     tools:
       hand: "手"
       pen: "ペン"

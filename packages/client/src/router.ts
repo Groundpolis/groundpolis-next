@@ -81,7 +81,8 @@ const defaultRoutes = [
 	{ path: '/miauth/:session', component: page('miauth') },
 	{ path: '/authorize-follow', component: page('follow') },
 	{ path: '/share', component: page('share') },
-	{ path: '/:catchAll(.*)', component: page('not-found') }
+	{ path: '/:catchAll(.*)', component: page('not-found') },
+	{ path: '/paint', component: page('paint') }
 ];
 
 const chatRoutes = [

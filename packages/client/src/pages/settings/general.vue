@@ -5,6 +5,8 @@
 		<option v-for="x in langs" :key="x[0]" :value="x[0]">{{ x[1] }}</option>
 	</FormSelect>
 
+	<FormLink class="_formBlock" @click="reloadLang">Reload Language</FormLink>
+
 	<FormRadios v-model="overridedDeviceKind" class="_formBlock">
 		<template #label>{{ $ts.overridedDeviceKind }}</template>
 		<option :value="null">{{ $ts.auto }}</option>
@@ -12,6 +14,7 @@
 		<option value="tablet"><i class="fas fa-tablet-alt"/> {{ $ts.tablet }}</option>
 		<option value="desktop"><i class="fas fa-desktop"/> {{ $ts.desktop }}</option>
 	</FormRadios>
+
 
 	<FormSwitch v-model="showFixedPostForm" class="_formBlock">{{ $ts.showFixedPostForm }}</FormSwitch>
 
@@ -241,6 +244,11 @@ export default defineComponent({
 
 			unisonReload();
 			
+		},
+		async reloadLang() {
+			localStorage.removeItem('locale');
+			await new Promise(res => setTimeout(res, 1000));
+			unisonReload();
 		}
 	}
 });

@@ -842,6 +842,7 @@ oneDay: "One day"
 oneWeek: "One week"
 reflectMayTakeTime: "It may take some time for this to be reflected."
 failedToFetchAccountInformation: "Could not fetch account information"
+paint: "Paint"
 _emailUnavailable:
   used: "This email address is already being used"
   format: "The format of this email address is invalid"
@@ -1736,6 +1737,10 @@ _gp:
     changeColor: "Change color"
     zoomMinus: "- Zoom"
     zoomPlus: "+ Zoom"
+    usePressure: "Use Pressure Sensing"
+    usePressureDescription: "When pressure sensing is enabled, the thickness of the pen changes according to the pressure of the brush in the compatible environment."
+    penWidth: "Pen Width"
+    eraserWidth: "Eraser Width"
     tools:
       hand: "Hand"
       pen: "Pen"
