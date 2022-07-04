@@ -4,17 +4,19 @@
 
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { PathOrFileDescriptor, readFileSync } from 'node:fs';
 import ms from 'ms';
 import Koa, { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
 import Router from '@koa/router';
 import send from 'koa-send';
 import favicon from 'koa-favicon';
 import views from 'koa-views';
+import sharp from 'sharp';
 import { createBullBoard } from '@bull-board/api';
 import { BullAdapter } from '@bull-board/api/bullAdapter.js';
 import { KoaAdapter } from '@bull-board/koa';
 
-import { IsNull } from 'typeorm';
+import { In, IsNull } from 'typeorm';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import config from '@/config/index.js';
 import { Users, Notes, UserProfiles, Pages, Channels, Clips, GalleryPosts } from '@/models/index.js';
@@ -32,6 +34,7 @@ const _dirname = dirname(_filename);
 const staticAssets = `${_dirname}/../../../assets/`;
 const clientAssets = `${_dirname}/../../../../client/assets/`;
 const assets = `${_dirname}/../../../../../built/_client_dist_/`;
+const swAssets = `${_dirname}/../../../../../built/_sw_dist_/`;
 
 // Init app
 const app = new Koa();
@@ -79,6 +82,9 @@ app.use(views(_dirname + '/views', {
 	extension: 'pug',
 	options: {
 		version: config.version,
+		getClientEntry: () => process.env.NODE_ENV === 'production' ?
+			config.clientEntry :
+			JSON.parse(readFileSync(`${_dirname}/../../../../../built/_client_dist_/manifest.json`, 'utf-8'))['src/init.ts'],
 		config,
 	},
 }));
@@ -142,10 +148,54 @@ router.get('/twemoji/(.*)', async ctx => {
 	});
 });
 
+router.get('/twemoji-badge/(.*)', async ctx => {
+	const path = ctx.path.replace('/twemoji-badge/', '');
+
+	if (!path.match(/^[0-9a-f-]+\.png$/)) {
+		ctx.status = 404;
+		return;
+	}
+
+	const mask = await sharp(
+		`${_dirname}/../../../node_modules/@discordapp/twemoji/dist/svg/${path.replace('.png', '')}.svg`,
+		{ density: 1000 },
+	)
+		.resize(488, 488)
+		.greyscale()
+		.normalise()
+		.linear(1.75, -(128 * 1.75) + 128) // 1.75x contrast
+		.flatten({ background: '#000' })
+		.extend({
+			top: 12,
+			bottom: 12,
+			left: 12,
+			right: 12,
+			background: '#000',
+		})
+		.toColorspace('b-w')
+		.png()
+		.toBuffer();
+
+	const buffer = await sharp({
+		create: { width: 512, height: 512, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+	})
+		.pipelineColorspace('b-w')
+		.boolean(mask, 'eor')
+		.resize(96, 96)
+		.png()
+		.toBuffer();
+
+	ctx.set('Content-Security-Policy', 'default-src \'none\'; style-src \'unsafe-inline\'');
+	ctx.set('Cache-Control', 'max-age=2592000');
+	ctx.set('Content-Type', 'image/png');
+	ctx.body = buffer;
+});
+
 // ServiceWorker
-router.get('/sw.js', async ctx => {
-	await send(ctx as any, `/sw.${config.version}.js`, {
-		root: assets,
+router.get(`/sw.js`, async ctx => {
+	await send(ctx as any, `/sw.js`, {
+		root: swAssets,
+		maxage: ms('10 minutes'),
 	});
 });
 
@@ -248,7 +298,7 @@ router.get(['/@:user', '/@:user/:sub'], async (ctx, next) => {
 			icon: meta.iconUrl,
 			themeColor: meta.themeColor,
 		});
-		setCache(ctx, 'public, max-age=30');
+		setCache(ctx, 'public, max-age=15');
 	} else {
 		// リモートユーザーなので
 		// モデレータがAPI経由で参照可能にするために404にはしない
@@ -273,7 +323,10 @@ router.get('/users/:user', async ctx => {
 
 // Note
 router.get('/notes/:note', async (ctx, next) => {
-	const note = await Notes.findOneBy({ id: ctx.params.note });
+	const note = await Notes.findOneBy({
+		id: ctx.params.note,
+		visibility: In(['public', 'home']),
+	});
 
 	if (note) {
 		const _note = await Notes.pack(note);
@@ -290,11 +343,7 @@ router.get('/notes/:note', async (ctx, next) => {
 			themeColor: meta.themeColor,
 		});
 
-		if (['public', 'home'].includes(note.visibility)) {
-			setCache(ctx, 'public, max-age=180');
-		} else {
-			setCache(ctx, 'private, max-age=0, must-revalidate');
-		}
+		setCache(ctx, 'public, max-age=15');
 
 		return;
 	}
@@ -331,7 +380,7 @@ router.get('/@:user/pages/:page', async (ctx, next) => {
 		});
 
 		if (['public'].includes(page.visibility)) {
-			setCache(ctx, 'public, max-age=180');
+			setCache(ctx, 'public, max-age=15');
 		} else {
 			setCache(ctx, 'private, max-age=0, must-revalidate');
 		}
@@ -362,7 +411,7 @@ router.get('/clips/:clip', async (ctx, next) => {
 			themeColor: meta.themeColor,
 		});
 
-		setCache(ctx, 'public, max-age=180');
+		setCache(ctx, 'public, max-age=15');
 
 		return;
 	}
@@ -387,7 +436,7 @@ router.get('/gallery/:post', async (ctx, next) => {
 			themeColor: meta.themeColor,
 		});
 
-		setCache(ctx, 'public, max-age=180');
+		setCache(ctx, 'public, max-age=15');
 
 		return;
 	}
@@ -411,7 +460,7 @@ router.get('/channels/:channel', async (ctx, next) => {
 			themeColor: meta.themeColor,
 		});
 
-		setCache(ctx, 'public, max-age=180');
+		setCache(ctx, 'public, max-age=15');
 
 		return;
 	}
@@ -470,7 +519,7 @@ router.get('(.*)', async ctx => {
 		icon: meta.iconUrl,
 		themeColor: meta.themeColor,
 	});
-	setCache(ctx, 'public, max-age=300');
+	setCache(ctx, 'public, max-age=15');
 });
 
 // Register router

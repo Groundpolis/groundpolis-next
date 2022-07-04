@@ -1,13 +1,14 @@
 <template>
 <!-- sectionを利用しているのは、deck.vue側でcolumnに対してfirst-of-typeを効かせるため -->
-<section v-hotkey="keymap" class="dnpfarvg _panel _narrow_"
+<section
+	v-hotkey="keymap" class="dnpfarvg _narrow_"
 	:class="{ paged: isMainColumn, naked, active, isStacked, draghover, dragging, dropready }"
-	:style="{ '--deckColumnHeaderHeight': deckStore.reactiveState.columnHeaderHeight.value + 'px' }"
 	@dragover.prevent.stop="onDragover"
 	@dragleave="onDragleave"
 	@drop.prevent.stop="onDrop"
 >
-	<header :class="{ indicated }"
+	<header
+		:class="{ indicated }"
 		draggable="true"
 		@click="goTop"
 		@dragstart="onDragstart"
@@ -22,7 +23,7 @@
 			<slot name="action"></slot>
 		</div>
 		<span class="header"><slot name="header"></slot></span>
-		<button v-if="func" v-tooltip="func.title" class="menu _button" @click.stop="func.handler"><i :class="func.icon || 'fas fa-cog'"></i></button>
+		<button v-tooltip="i18n.ts.settings" class="menu _button" @click.stop="showSettingsMenu"><i class="fas fa-cog"></i></button>
 	</header>
 	<div v-show="active" ref="body">
 		<slot></slot>
@@ -39,9 +40,8 @@ export type DeckFunc = {
 </script>
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, provide, watch } from 'vue';
+import { updateColumn, swapLeftColumn, swapRightColumn, swapUpColumn, swapDownColumn, stackLeftColumn, popRightColumn, removeColumn, swapColumn, Column , deckStore } from './deck-store';
 import * as os from '@/os';
-import { updateColumn, swapLeftColumn, swapRightColumn, swapUpColumn, swapDownColumn, stackLeftColumn, popRightColumn, removeColumn, swapColumn, Column } from './deck-store';
-import { deckStore } from './deck-store';
 import { i18n } from '@/i18n';
 
 provide('shouldHeaderThin', true);
@@ -61,8 +61,8 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	(e: 'parent-focus', direction: 'up' | 'down' | 'left' | 'right'): void;
-	(e: 'change-active-state', v: boolean): void;
+	(ev: 'parent-focus', direction: 'up' | 'down' | 'left' | 'right'): void;
+	(ev: 'change-active-state', v: boolean): void;
 }>();
 
 let body = $ref<HTMLDivElement>();
@@ -94,7 +94,6 @@ onBeforeUnmount(() => {
 	os.deckGlobalEvents.off('column.dragEnd', onOtherDragEnd);
 });
 
-
 function onOtherDragStart() {
 	dropready = true;
 }
@@ -106,7 +105,7 @@ function onOtherDragEnd() {
 function toggleActive() {
 	if (!props.isStacked) return;
 	updateColumn(props.column.id, {
-		active: !props.column.active
+		active: !props.column.active,
 	});
 }
 
@@ -119,67 +118,81 @@ function getMenu() {
 				name: {
 					type: 'string',
 					label: i18n.ts.name,
-					default: props.column.name
+					default: props.column.name,
 				},
 				width: {
 					type: 'number',
 					label: i18n.ts.width,
-					default: props.column.width
+					default: props.column.width,
 				},
 				flexible: {
 					type: 'boolean',
 					label: i18n.ts.flexible,
-					default: props.column.flexible
-				}
+					default: props.column.flexible,
+				},
 			});
 			if (canceled) return;
 			updateColumn(props.column.id, result);
-		}
+		},
 	}, null, {
 		icon: 'fas fa-arrow-left',
 		text: i18n.ts._deck.swapLeft,
 		action: () => {
 			swapLeftColumn(props.column.id);
-		}
+		},
 	}, {
 		icon: 'fas fa-arrow-right',
 		text: i18n.ts._deck.swapRight,
 		action: () => {
 			swapRightColumn(props.column.id);
-		}
+		},
 	}, props.isStacked ? {
 		icon: 'fas fa-arrow-up',
 		text: i18n.ts._deck.swapUp,
 		action: () => {
 			swapUpColumn(props.column.id);
-		}
+		},
 	} : undefined, props.isStacked ? {
 		icon: 'fas fa-arrow-down',
 		text: i18n.ts._deck.swapDown,
 		action: () => {
 			swapDownColumn(props.column.id);
-		}
+		},
 	} : undefined, null, {
 		icon: 'fas fa-window-restore',
 		text: i18n.ts._deck.stackLeft,
 		action: () => {
 			stackLeftColumn(props.column.id);
-		}
+		},
 	}, props.isStacked ? {
 		icon: 'fas fa-window-maximize',
 		text: i18n.ts._deck.popRight,
 		action: () => {
 			popRightColumn(props.column.id);
-		}
+		},
 	} : undefined, null, {
 		icon: 'fas fa-trash-alt',
 		text: i18n.ts.remove,
 		danger: true,
 		action: () => {
 			removeColumn(props.column.id);
-		}
+		},
 	}];
+
+	if (props.func) {
+		items.unshift(null);
+		items.unshift({
+			icon: props.func.icon,
+			text: props.func.title,
+			action: props.func.handler,
+		});
+	}
+
 	return items;
+}
+
+function showSettingsMenu(ev: MouseEvent) {
+	os.popupMenu(getMenu(), ev.currentTarget ?? ev.target);
 }
 
 function onContextmenu(ev: MouseEvent) {
@@ -189,13 +202,13 @@ function onContextmenu(ev: MouseEvent) {
 function goTop() {
 	body.scrollTo({
 		top: 0,
-		behavior: 'smooth'
+		behavior: 'smooth',
 	});
 }
 
-function onDragstart(e) {
-	e.dataTransfer.effectAllowed = 'move';
-	e.dataTransfer.setData(_DATA_TRANSFER_DECK_COLUMN_, props.column.id);
+function onDragstart(ev) {
+	ev.dataTransfer.effectAllowed = 'move';
+	ev.dataTransfer.setData(_DATA_TRANSFER_DECK_COLUMN_, props.column.id);
 
 	// Chromeのバグで、Dragstartハンドラ内ですぐにDOMを変更する(=リアクティブなプロパティを変更する)とDragが終了してしまう
 	// SEE: https://stackoverflow.com/questions/19639969/html5-dragend-event-firing-immediately
@@ -204,35 +217,34 @@ function onDragstart(e) {
 	}, 10);
 }
 
-function onDragend(e) {
+function onDragend(ev) {
 	dragging = false;
 }
 
-function onDragover(e) {
+function onDragover(ev) {
 	// 自分自身がドラッグされている場合
 	if (dragging) {
 		// 自分自身にはドロップさせない
-		e.dataTransfer.dropEffect = 'none';
-		return;
+		ev.dataTransfer.dropEffect = 'none';
+	} else {
+		const isDeckColumn = ev.dataTransfer.types[0] === _DATA_TRANSFER_DECK_COLUMN_;
+
+		ev.dataTransfer.dropEffect = isDeckColumn ? 'move' : 'none';
+
+		if (isDeckColumn) draghover = true;
 	}
-
-	const isDeckColumn = e.dataTransfer.types[0] == _DATA_TRANSFER_DECK_COLUMN_;
-
-	e.dataTransfer.dropEffect = isDeckColumn ? 'move' : 'none';
-
-	if (!dragging && isDeckColumn) draghover = true;
 }
 
 function onDragleave() {
 	draghover = false;
 }
 
-function onDrop(e) {
+function onDrop(ev) {
 	draghover = false;
 	os.deckGlobalEvents.emit('column.dragEnd');
 
-	const id = e.dataTransfer.getData(_DATA_TRANSFER_DECK_COLUMN_);
-	if (id != null && id != '') {
+	const id = ev.dataTransfer.getData(_DATA_TRANSFER_DECK_COLUMN_);
+	if (id != null && id !== '') {
 		swapColumn(props.column.id, id);
 	}
 }
@@ -241,15 +253,13 @@ function onDrop(e) {
 <style lang="scss" scoped>
 .dnpfarvg {
 	--root-margin: 10px;
+	--deckColumnHeaderHeight: 42px;
 
 	height: 100%;
 	overflow: hidden;
-	contain: content;
-	box-shadow: 0 0 8px 0 var(--shadow);
+	contain: strict;
 
 	&.draghover {
-		box-shadow: 0 0 0 2px var(--focus);
-
 		&:after {
 			content: "";
 			display: block;
@@ -264,7 +274,18 @@ function onDrop(e) {
 	}
 
 	&.dragging {
-		box-shadow: 0 0 0 2px var(--focus);
+		&:after {
+			content: "";
+			display: block;
+			position: absolute;
+			z-index: 1000;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: var(--focus);
+			opacity: 0.5;
+		}
 	}
 
 	&.dropready {

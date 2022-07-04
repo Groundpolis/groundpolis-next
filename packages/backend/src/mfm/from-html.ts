@@ -1,11 +1,16 @@
-import * as parse5 from 'parse5';
-import treeAdapter from 'parse5/lib/tree-adapters/default.js';
 import { URL } from 'node:url';
+import * as parse5 from 'parse5';
+import * as TreeAdapter from '../../node_modules/parse5/dist/tree-adapters/default.js';
 
-const urlRegex     = /^https?:\/\/[\w\/:%#@$&?!()\[\]~.,=+\-]+/;
+const treeAdapter = TreeAdapter.defaultTreeAdapter;
+
+const urlRegex = /^https?:\/\/[\w\/:%#@$&?!()\[\]~.,=+\-]+/;
 const urlRegexFull = /^https?:\/\/[\w\/:%#@$&?!()\[\]~.,=+\-]+$/;
 
 export function fromHtml(html: string, hashtagNames?: string[]): string {
+	// some AP servers like Pixelfed use br tags as well as newlines
+	html = html.replace(/<br\s?\/?>\r?\n/gi, '\n');
+
 	const dom = parse5.parseFragment(html);
 
 	let text = '';
@@ -16,7 +21,7 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 
 	return text.trim();
 
-	function getText(node: parse5.Node): string {
+	function getText(node: TreeAdapter.Node): string {
 		if (treeAdapter.isTextNode(node)) return node.value;
 		if (!treeAdapter.isElementNode(node)) return '';
 		if (node.nodeName === 'br') return '\n';
@@ -28,7 +33,7 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 		return '';
 	}
 
-	function appendChildren(childNodes: parse5.ChildNode[]): void {
+	function appendChildren(childNodes: TreeAdapter.ChildNode[]): void {
 		if (childNodes) {
 			for (const n of childNodes) {
 				analyze(n);
@@ -36,7 +41,7 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 		}
 	}
 
-	function analyze(node: parse5.Node) {
+	function analyze(node: TreeAdapter.Node) {
 		if (treeAdapter.isTextNode(node)) {
 			text += node.value;
 			return;
@@ -167,7 +172,7 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 				const t = getText(node);
 				if (t) {
 					text += '\n> ';
-					text += t.split('\n').join(`\n> `);
+					text += t.split('\n').join('\n> ');
 				}
 				break;
 			}

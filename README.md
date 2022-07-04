@@ -1,24 +1,28 @@
-[![Misskey](https://github.com/misskey-dev/assets/blob/main/banner.png?raw=true)](https://join.misskey.page/)
-
 <div align="center">
-
-**🌎 A forever evolving, interplanetary microblogging platform. 🚀**
-
-**Groundpolis** is a distributed microblogging platform with advanced features such as Reactions and a highly customizable UI.
-
-[Learn more](https://misskey-hub.net/)
-
+<a href="https://misskey-hub.net">
+	<img src="./assets/title_float.svg" alt="Misskey logo" style="border-radius:50%" width="400"/>
+</a>
+	
+**🌎 **[Misskey](https://misskey-hub.net/)** is an open source, decentralized social media platform that's free forever! 🚀**
+	
 ---
 
-[✨ Find an instance](https://misskey-hub.net/instances.html)
-•
-[📦 Create your own instance](https://misskey-hub.net/docs/install.html)
-•
-[🛠️ Contribute](./CONTRIBUTING.md)
+<a href="https://misskey-hub.net/instances.html">
+		<img src="https://custom-icon-badges.herokuapp.com/badge/find_an-instance-acea31?logoColor=acea31&style=for-the-badge&logo=misskey&labelColor=363B40" alt="find an instance"/></a>
 
+<a href="https://misskey-hub.net/docs/install.html">
+		<img src="https://custom-icon-badges.herokuapp.com/badge/create_an-instance-FBD53C?logoColor=FBD53C&style=for-the-badge&logo=server&labelColor=363B40" alt="create an instance"/></a>
+
+<a href="./CONTRIBUTING.md">
+		<img src="https://custom-icon-badges.herokuapp.com/badge/become_a-contributor-A371F7?logoColor=A371F7&style=for-the-badge&logo=git-merge&labelColor=363B40" alt="become a contributor"/></a>
+
+<a href="https://discord.gg/Wp8gVStHW3">
+		<img src="https://custom-icon-badges.herokuapp.com/badge/join_the-community-5865F2?logoColor=5865F2&style=for-the-badge&logo=discord&labelColor=363B40" alt="join the community"/></a>
+
+<a href="https://www.patreon.com/syuilo">
+		<img src="https://custom-icon-badges.herokuapp.com/badge/become_a-patron-F96854?logoColor=F96854&style=for-the-badge&logo=patreon&labelColor=363B40" alt="become a patron"/></a>
+	
 ---
-
-<a href="https://www.patreon.com/syuilo"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" alt="Become a Patron!" width="160" /></a>
 
 </div>
 
@@ -28,29 +32,26 @@
 
 ## ✨ Features
 - **ActivityPub support**\
-	It is possible to interact with other software.
+Not on Misskey? No problem! Not only can Misskey instances talk to each other, but you can make friends with people on other networks like Mastodon and Pixelfed!
 - **Reactions**\
-	You can add "reactions" to each post, making it easy for you to express your feelings.
+You can add emoji reactions to any post! No longer are you bound by a like button, show everyone exactly how you feel with the tap of a button.
 - **Drive**\
-	An interface to manage uploaded files such as images, videos, sounds, etc.
-	You can also organize your favorite content into folders, making it easy to share again.
+With Misskey's built in drive, you get cloud storage right in your social media, where you can upload any files, make folders, and find media from posts you've made!
 - **Rich Web UI**\
-	Misskey has a rich WebUI by default.
-	It is highly customizable by flexibly changing the layout and installing various widgets and themes.
-	Furthermore, plug-ins can be created using AiScript, a original programming language.
-- and more...
+	Misskey has a rich and easy to use Web UI!
+	It is highly customizable, from changing the layout and adding widgets to making custom themes.
+	Furthermore, plugins can be created using AiScript, an original programming language.
+- And much more...
 
 </div>
 
 <div style="clear: both;"></div>
 
-[backer-url]: #backers
-[backer-badge]: https://opencollective.com/misskey/backers/badge.svg
-[backers-image]: https://opencollective.com/misskey/backers.svg
-[sponsor-url]: #sponsors
-[sponsor-badge]: https://opencollective.com/misskey/sponsors/badge.svg
-[sponsors-image]: https://opencollective.com/misskey/sponsors.svg
-[support-url]: https://opencollective.com/misskey#support
+## Documentation
 
-[syuilo-link]:      https://syuilo.com
-[syuilo-icon]:      https://avatars2.githubusercontent.com/u/4439005?v=3&s=70
+Misskey Documentation can be found at [Misskey Hub](https://misskey-hub.net/), some of the links and graphics above also lead to specific portions of it.
+
+## Sponsors
+<div align="center">
+	<a class="rss3" title="RSS3" href="https://rss3.io/" target="_blank"><img src="https://rss3.mypinata.cloud/ipfs/QmUG6H3Z7D5P511shn7sB4CPmpjH5uZWu4m5mWX7U3Gqbu" alt="RSS3" height="60"></a>
+</div>

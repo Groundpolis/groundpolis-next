@@ -10,16 +10,18 @@ import MkEllipsis from './global/ellipsis.vue';
 import MkTime from './global/time.vue';
 import MkUrl from './global/url.vue';
 import I18n from './global/i18n';
+import RouterView from './global/router-view.vue';
 import MkLoading from './global/loading.vue';
 import MkError from './global/error.vue';
 import MkAd from './global/ad.vue';
-import MkHeader from './global/header.vue';
+import MkPageHeader from './global/page-header.vue';
 import MkSpacer from './global/spacer.vue';
 import MkStickyContainer from './global/sticky-container.vue';
 import GpBadge from './global/gp-badge.vue';
 
 export default function(app: App) {
 	app.component('I18n', I18n);
+	app.component('RouterView', RouterView);
 	app.component('Mfm', Mfm);
 	app.component('MkA', MkA);
 	app.component('MkAcct', MkAcct);
@@ -32,7 +34,7 @@ export default function(app: App) {
 	app.component('MkLoading', MkLoading);
 	app.component('MkError', MkError);
 	app.component('MkAd', MkAd);
-	app.component('MkHeader', MkHeader);
+	app.component('MkPageHeader', MkPageHeader);
 	app.component('MkSpacer', MkSpacer);
 	app.component('MkStickyContainer', MkStickyContainer);
 	app.component('GpBadge', GpBadge);
@@ -41,6 +43,7 @@ export default function(app: App) {
 declare module '@vue/runtime-core' {
 	export interface GlobalComponents {
 		I18n: typeof I18n;
+		RouterView: typeof RouterView;
 		Mfm: typeof Mfm;
 		MkA: typeof MkA;
 		MkAcct: typeof MkAcct;
@@ -53,7 +56,7 @@ declare module '@vue/runtime-core' {
 		MkLoading: typeof MkLoading;
 		MkError: typeof MkError;
 		MkAd: typeof MkAd;
-		MkHeader: typeof MkHeader;
+		MkPageHeader: typeof MkPageHeader;
 		MkSpacer: typeof MkSpacer;
 		MkStickyContainer: typeof MkStickyContainer;
 		GpBadge: typeof GpBadge;

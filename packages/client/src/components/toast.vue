@@ -19,7 +19,7 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(e: 'closed'): void;
+	(ev: 'closed'): void;
 }>();
 
 const zIndex = os.claimZIndex('high');
@@ -54,7 +54,7 @@ onMounted(() => {
 		width: min-content;
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 		border-radius: 8px;
-		overflow: clip;
+		overflow: hidden; overflow: clip;
 		text-align: center;
 		pointer-events: none;
 

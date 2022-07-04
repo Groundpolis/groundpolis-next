@@ -29,6 +29,8 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 
 	getPublicProperties(file: DriveFile): DriveFile['properties'] {
 		if (file.properties.orientation != null) {
+			// TODO
+			//const properties = structuredClone(file.properties);
 			const properties = JSON.parse(JSON.stringify(file.properties));
 			if (file.properties.orientation >= 5) {
 				[properties.width, properties.height] = [properties.height, properties.width];
