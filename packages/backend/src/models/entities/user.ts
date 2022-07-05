@@ -242,6 +242,12 @@ export class User {
 	})
 	public sex: 'not-known' | 'male' | 'female' | 'not-applicable';
 
+	@Column('integer', {
+		nullable: true,
+		comment: 'Overrides user drive capacity limit',
+	})
+	public driveCapacityOverrideMb: number | null;
+
 	constructor(data: Partial<User>) {
 		if (data == null) return;
 
