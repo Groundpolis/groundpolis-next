@@ -20,7 +20,7 @@ export const groundpolisRoutes = [{
 	component: page(() => import('./pages/about-misskey.vue')),
 }];
 
-export const routes = [{
+export const routes = [...groundpolisRoutes, {
 	path: '/@:initUser/pages/:initPageName/view-source',
 	component: page(() => import('./pages/page-editor/page-editor.vue')),
 }, {
@@ -241,7 +241,7 @@ export const routes = [{
 }, {
 	path: '/:(*)',
 	component: page(() => import('./pages/not-found.vue')),
-}, ...groundpolisRoutes];
+}];
 
 export const mainRouter = new Router(routes, location.pathname + location.search + location.hash);
 
