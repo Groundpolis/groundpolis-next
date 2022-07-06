@@ -1,0 +1,37 @@
+{
+	id: '4022a412-057a-429a-884b-03e5d426ba4f',
+
+	name: 'Xeltica Light Green',
+	author: 'Xeltica Studio',
+	desc: 'Xeltica Design System Light Theme with Green Accent Color',
+
+	base: 'light',
+
+	props: {
+		accent: '#3eb370',
+		bg: '#e8e8e8',
+		fg: '#474747',
+		fgOnAccent: '#fff',
+		panel: '#ffffff',
+		navBg: '@bg',
+		link: '@accent',
+		hashtag: '@accent',
+		mention: '@accent',
+		mentionMe: '@accent',
+		renote: '@accent',
+		infoBg: '@panel',
+		infoFg: '#757575',
+		infoWarnBg: '#f6e599',
+		infoWarnFg: '#8c7200',
+		cwBg: '#bababa',
+		cwFg: '#ffffff',
+		cwHoverBg: '#c6c6c6',
+		badge: '@accent',
+		success: '#3eb370',
+		error: '#e23731',
+		warn: '#e9be00',
+		codeString: '#bc4e01',
+		codeNumber: '#1e5acc',
+		codeBoolean: '#328f5a',
+	},
+}

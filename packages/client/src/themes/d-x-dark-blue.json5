@@ -1,0 +1,38 @@
+{
+	id: 'FE2CDB80-4E03-43A5-8738-2B8A4B15D47B',
+
+	name: 'Xeltica Dark Blue',
+	author: 'Xeltica Studio',
+	desc: 'Xeltica Design System Dark Theme with Blue Accent Color',
+
+	base: 'dark',
+
+	props: {
+		accent: '#00b7ff',
+		bg: '#1a1a1a',
+		fg: '#c6c6c6',
+		fgOnAccent: '#fff',
+		link: '@accent',
+		hashtag: '@accent',
+		mention: '@accent',
+		mentionMe: '@accent',
+		renote: '@accent',
+		panel: '#252525',
+		navBg: '@bg',
+		infoBg: '@panel',
+		infoFg: '#757575',
+		infoWarnBg: '#5d4c00',
+		infoWarnFg: '#e9be00',
+		cwBg: '#6a6a6a',
+		cwFg: '#252525',
+		cwHoverBg: '#757575',
+		badge: '@accent',
+		messageBg: '@bg',
+		success: '#3eb370',
+		error: '#e23731',
+		warn: '#e9be00',
+		codeString: '#f7c099',
+		codeNumber: '#7caaff',
+		codeBoolean: '#b891c1',
+	},
+}

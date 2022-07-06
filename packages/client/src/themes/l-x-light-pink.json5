@@ -1,0 +1,37 @@
+{
+	id: 'c3dc88c1-ccca-4570-bc23-1501a06806c5',
+
+	name: 'Xeltica Light Pink',
+	author: 'Xeltica Studio',
+	desc: 'Xeltica Design System Light Theme with Pink Accent Color',
+
+	base: 'light',
+
+	props: {
+		accent: '#ff5c84',
+		bg: '#e8e8e8',
+		fg: '#474747',
+		fgOnAccent: '#fff',
+		panel: '#ffffff',
+		navBg: '@bg',
+		link: '@accent',
+		hashtag: '@accent',
+		mention: '@accent',
+		mentionMe: '@accent',
+		renote: '@accent',
+		infoBg: '@panel',
+		infoFg: '#757575',
+		infoWarnBg: '#f6e599',
+		infoWarnFg: '#8c7200',
+		cwBg: '#bababa',
+		cwFg: '#ffffff',
+		cwHoverBg: '#c6c6c6',
+		badge: '@accent',
+		success: '#3eb370',
+		error: '#e23731',
+		warn: '#e9be00',
+		codeString: '#bc4e01',
+		codeNumber: '#1e5acc',
+		codeBoolean: '#328f5a',
+	},
+}
