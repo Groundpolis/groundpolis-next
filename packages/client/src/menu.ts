@@ -169,4 +169,11 @@ export const menuDef = reactive({
 			}], ev.currentTarget ?? ev.target);
 		},
 	},
+	reload: {
+		title: 'reload',
+		icon: 'fas fa-refresh',
+		action: (ev) => {
+			location.reload();
+		},
+	},
 });
