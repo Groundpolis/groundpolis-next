@@ -5,7 +5,7 @@
 		<option v-for="x in langs" :key="x[0]" :value="x[0]">{{ x[1] }}</option>
 	</FormSelect>
 
-	<FormLink class="_formBlock" @click="reloadLang">Reload Language</FormLink>
+	<FormButton primary inline @click="reloadLang">Reload Language</FormButton>
 
 	<FormRadios v-model="overridedDeviceKind" class="_formBlock">
 		<template #label>{{ i18n.ts.overridedDeviceKind }}</template>
@@ -90,7 +90,7 @@
 		<option value="renoteQuote">{{ i18n.ts._gp._renoteButtonMode.renoteQuote }}</option>
 	</FormSelect>
 
-	<FormFolder>
+	<FormFolder class="_formBlock">
 		<template #label>{{ i18n.ts._gp.iconShape }} <GpBadge/></template>
 		<MkAvatar class="avatar" :user="$i" :show-indicator="true"/>
 		<FormRadios v-model="iconShape" class="_formBlock">			
@@ -99,11 +99,6 @@
 				{{ i18n.ts._gp._iconShape[shape] }}
 			</option>
 		</FormRadios>
-	</FormFolder>
-
-	<FormFolder>
-		<template #label>{{ i18n.ts.defaultNavigationBehaviour }}</template>
-		<FormSwitch v-model="defaultSideView">{{ i18n.ts.openInSideView }}</FormSwitch>
 	</FormFolder>
 
 	<FormRange v-model="numberOfPageCache" :min="1" :max="10" :step="1" class="_formBlock">
@@ -123,6 +118,7 @@ import FormSwitch from '@/components/form/switch.vue';
 import FormSelect from '@/components/form/select.vue';
 import FormRadios from '@/components/form/radios.vue';
 import FormRange from '@/components/form/range.vue';
+import FormButton from '@/components/ui/button.vue';
 import FormSection from '@/components/form/section.vue';
 import FormFolder from '@/components/form/folder.vue';
 import FormLink from '@/components/form/link.vue';
@@ -212,6 +208,11 @@ watch([
 const headerActions = $computed(() => []);
 
 const headerTabs = $computed(() => []);
+
+const reloadLang = async () => {
+	localStorage.removeItem('locale');
+	await reloadAsk();
+};
 
 definePageMetadata({
 	title: i18n.ts.general,
