@@ -45,6 +45,10 @@
 						<p v-else class="empty">{{ $ts.noAccountDescription }}</p>
 					</div>
 					<div class="fields system">
+						<dl v-if="user.sex && user.sex !== 'not-known'" class="field">
+							<dt class="name"><i :class="getGenderIcon(user.sex)"></i> {{ $ts._gp.gender }}</dt>
+							<dd class="value">{{ $t(`_gp._gender.${user.sex}`) }}</dd>
+						</dl>
 						<dl v-if="user.location" class="field">
 							<dt class="name"><i class="fas fa-map-marker fa-fw"></i> {{ $ts.location }}</dt>
 							<dd class="value">{{ user.location }}</dd>
@@ -89,7 +93,7 @@
 				<div v-if="user.pinnedNotes.length > 0" class="_gap">
 					<XNote v-for="note in user.pinnedNotes" :key="note.id" class="note _block" :note="note" :pinned="true"/>
 				</div>
-				<MkInfo v-else-if="$i && $i.id === user.id">{{ $ts.userPagePinTip }}</MkInfo>
+				<MkInfo v-else-if="$i && $i.id === user.id" class="_gap">{{ $ts.userPagePinTip }}</MkInfo>
 				<template v-if="narrow">
 					<XPhotos :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user" style="margin-top: var(--margin);"/>
@@ -174,6 +178,17 @@ function parallax() {
 	const z = 1.75; // 奥行き(小さいほど奥)
 	const pos = -(top / z);
 	banner.style.backgroundPosition = `center calc(50% - ${pos}px)`;
+}
+
+function getGenderIcon(gender: string) {
+	switch (gender) {
+		case 'male':
+			return 'fas fa-mars fa-fw';
+		case 'female':
+			return 'fas fa-venus fa-fw';
+		default:
+			return 'fas fa-genderless fa-fw';
+	}
 }
 
 onMounted(() => {
