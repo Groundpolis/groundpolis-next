@@ -485,4 +485,9 @@ export class Meta {
 		default: false,
 	})
 	public enableIpLogging: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public enableActiveEmailValidation: boolean;
 }
